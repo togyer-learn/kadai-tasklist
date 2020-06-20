@@ -1,6 +1,5 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
   before_action :correct_user, only: [:show, :edit, :update, :destroy]
   
   def index
@@ -42,15 +41,12 @@ class TasksController < ApplicationController
   def destroy
     @task.destroy
     
-    flash[:success] = 'Task は完了しました'
-    redirect_to tasks_url
+    flash[:success] = 'Task を完了しました'
+    redirect_back(fallback_location: root_path)
   end
   
   private
-  def set_task
-    @task = Task.find(params[:id])
-  end
-  
+
   # Strong Parameter
   def task_params
     params.require(:task).permit(:content, :status)
